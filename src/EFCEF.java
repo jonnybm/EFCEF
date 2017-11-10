@@ -119,7 +119,7 @@ public class EFCEF {
 				//System.out.println(" LINHA PREENCHIDA ["+i+"]");
 				
 				getSetCEF.setPorcentagem((i*100)/afile.length);
-				//System.out.println(" STATUS: ["+getSetCEF.getPorcentagem()+" %]");
+				System.out.println(" STATUS: ["+getSetCEF.getPorcentagem()+" %]");
 			}
 			
 			
@@ -158,6 +158,8 @@ public class EFCEF {
 		  public static String trataPDF(String[] linhas) 
 		  {			  
 			  String ret = "";
+			  
+			  //System.out.println("PASSO 1");
 
 				  if(banco.equals("CEF")) // Banco do Brasil
 				  {
@@ -176,7 +178,7 @@ public class EFCEF {
 				            		//SETANDO A CONTA JUDICIAL
 				            		getSetCEF.setContaJuridica(ret);    
 				            		
-				            		System.out.println("CONTA JU : ["+ret+"]");
+				            		//System.out.println("CONTA JU : ["+ret+"]");
 				          }
 						  //LINHA 8 PEGA O NOME AUTOR
 						  if(i == 25)
@@ -200,7 +202,7 @@ public class EFCEF {
 				            		
 				            		//SETANDO O AUTOR
 				            		getSetCEF.setAutor(ret);
-				            		System.out.println("AUTOR :>"+ret);
+				            		//System.out.println("AUTOR :>"+ret);
 				          }
 						  
 				          //PEGANDO O VALOR
@@ -209,6 +211,7 @@ public class EFCEF {
 				        	  			
 				        	  		if(!ret.matches("[0-9]"))//contem apenas numero?
 				        	        {
+				        	  			
 					        	  		String[] Valor = null;
 					        	  		Valor =  linhas[i].substring(5, linhas[i].length()-1).split(" ");// Pega a linha e Tira a Data que contem incialmente na linha faz Splito para pegar o segundo valor da Linha
 					        	  		ret = "";
@@ -221,9 +224,16 @@ public class EFCEF {
 				        	  			//VAI RODAR as ultima 4linhas de tras pra frente
 				        	  			for(int i1 = 1; i1 < 6; ++i1){
 				        	  				
+//					        	  			if(linhas[i].toUpperCase().indexOf ("DATA") <= 0 || linhas[i].toUpperCase().indexOf ("PÁGINA") <= 0 || linhas[i].toUpperCase().indexOf ("EXTRATO") <= 0)
+//					        	  			{
+//					        	  				System.out.println("linhas[i]"+ linhas[i]);
+//					        	  				System.out.println("Voltando Linha para achar Valor");
+//					        	  				continue;
+//					        	  			}
+				        	  				
 				        	  				if(getSetCEF.getDataMesConsulta().equals(ComboMes) || getSetCEF.getDataMesConsulta() == ComboMes)  {
 				        	  					
-				        	  					System.out.println("DATA IGUAIS VAI PEGAR VALOR :>"+ComboMes);
+				        	  					//System.out.println("DATA IGUAIS VAI PEGAR VALOR :>"+ComboMes);
 				        	  												        	  		
 							        	  		//VALOR
 				        	  					ret = "";
@@ -236,10 +246,10 @@ public class EFCEF {
 				        	  				else 
 				        	  				{
 				        	  					
-				        	  					System.out.println("VALOR I :>"+i1);
+				        	  					//System.out.println("VALOR I :>"+i1);
 //				        	  					System.out.println("VALOR LINHA :>"+ i1);
 				        	  					
-				        	  					if(i1 == 5 ) //ultima contagem do For???
+				        	  					if(i1 == 3 ) //ultima contagem do For???
 				        	  					{	
 				        	  					
 				        	  						Valor =  linhas[i].substring(5, linhas[i].length()-1).split(" ");// Pega a linha e Tira a Data que contem incialmente na linha faz Splito para pegar o segundo valor da Linha
@@ -258,7 +268,7 @@ public class EFCEF {
 				        	  						ret = "";
 								        	  		ret = linhas[i-i1].substring(3, 5);
 								        	  		
-								        	  		System.out.println("DATA CORReSPONDENTE :>"+ret);
+								        	  		//System.out.println("DATA CORReSPONDENTE :>"+ret);
 								        	  		getSetCEF.setDataMesConsulta(ret.trim());
 				        	  					}	
 				        	  				}
@@ -272,7 +282,7 @@ public class EFCEF {
 //					        	  		ret =  trataSujeira(ret);
 //					        	  		getSetCEF.setValorAtualizado(ret.trim());
 					        	  		
-				        	  			System.out.println("VALOR :>"+ret.trim());
+				        	  			//System.out.println("VALOR :>"+ret.trim());
 
 				        	        }
 				        	  		else {
@@ -296,37 +306,54 @@ public class EFCEF {
 						  						  
 						  if(i == 16) //LINHA 5 PEGA VARA , COMARCA e ESTADO
 				          {
-				            		ret = linhas[i];
+							 // System.out.println("PASSO 2");	
+							  
+							  ret = linhas[i];
 				            		
 				            	 	String[] parts = null;
 				            	 	parts = ret.split("-");
-				            	 	
+				            	 					            	 	
 				            	 	String[] partsVara = null;
 				            	 	partsVara = ret.split("-");
 				            	 	
-				            	 	
+				            	 //	System.out.println("PASSO 2.3");
 				            		
 				            	 	//VARA DO TRABALHO
 				            	 	ret = partsVara[0];
 				            	 	ret =  trataSujeira(ret);
 				            	 	ret = ret.trim()+"ª VT";
 				            	 	getSetCEF.setVara(ret);
-				            		System.out.println("VARA :>"+ret.trim());
+				            		//System.out.println("VARA :>"+ret.trim());
 
+				            	 	//System.out.println("PASSO 2.4");
 				            	 	
 				            	 	
 				            	 	//COMARCA
 				            		ret = parts[1];
+				            		
+				            		System.out.println("COMARCA E ESTADO :>"+ret.trim());
+				            		
 				            	 	parts = ret.split("/");
+				            	 	
+				            	 	
 				            	 	ret = parts[0];
 				            	 	ret =  toTitledCase(ret);
 				            	 	getSetCEF.setComarca(ret);
-				            		System.out.println("COMARCA :>"+ret.trim());
+				            		//System.out.println("COMARCA :>"+ret.trim());
+				            	 	
+				            	 	
 				            		
 				            	 	//ESTADO - Seta Estado
-				            	 	ret = parts[1];
-				            	 	getSetCEF.setEstado(ret);
-//				            		System.out.println("ESTADO :>"+ret.trim());
+				            		
+				            		if(parts.length == 1)
+				            		{
+				            			ret = " ";	
+				            		}
+				            		else
+				            		{	
+					            		ret = parts[1];
+					            	 	getSetCEF.setEstado(ret);
+				            		}
 
 				          }
 
@@ -338,7 +365,7 @@ public class EFCEF {
 				            		
 				            		ret = ret.substring(0,18);
 				            		getSetCEF.setCNPJ(ret);
-				            		System.out.println("CNPJ :>"+ret);
+				            		//System.out.println("CNPJ :>"+ret);
 				            		
 				            		
 				            		//REU
@@ -361,7 +388,7 @@ public class EFCEF {
 				            		
 				            		//SETANDO O AUTOR
 				            		getSetCEF.setReu(ret);
-				            		System.out.println("REU :>"+ret);
+				            		//System.out.println("REU :>"+ret);
 				          }
 		  
 						  if(i == 28) //LINHA 9 PEGA O VALOR DO DEPOSITO INICIAL
@@ -376,7 +403,7 @@ public class EFCEF {
 			            	 	//DATA DEPOSITO
 			            	 	ret = partsVara[0];
 				            	getSetCEF.setDataDeposito(ret);
-				            	System.out.println("DATA DEPOSITO :>"+ret);
+				            	//System.out.println("DATA DEPOSITO :>"+ret);
 			            	 	
 				            	
 				            	
@@ -386,7 +413,7 @@ public class EFCEF {
 				            	//SETANDO VALOR DEPOSITO INICIAL
 				            	getSetCEF.setValorOriginal(ret);
 				            	
-				            	System.out.println("DEPOSITO INICIAL :>"+ret);
+				            //	System.out.println("DEPOSITO INICIAL :>"+ret);
 				          }
 
 						 
@@ -635,12 +662,17 @@ public class EFCEF {
 				            	    	 	//System.out.println("CJ EXEL :>"+CJPDF);
 			                    	//System.out.println("contadorPosicao: " + contadorPosicao);
 				            	     
-			            	    	     //System.out.println("contaJudicial EXEL :>"+contaJudicial);
-			            	    	     //System.out.println("contaJudicial PDF :>"+getSetCEF.getContaJuridica());
+
 			            	    	     
 			            	    	     
 				            	      if(contaJudicial == Long.parseLong(CJPDF)) 
 			                        	{
+				            	    	  
+				            	    	     System.out.println("contaJudicial EXEL :>"+contaJudicial);
+				            	    	     System.out.println("contaJudicial PDF :>"+CJPDF);
+				            	    	     System.out.println("POSICAO :>"+i);
+				            	    	     
+				            	    	     
 				            	    	  		getSetCEF.setPosicaoExiste(i);	
 			                        	 	getSetCEF.setCjNova(false);
 	                  	 	
@@ -995,7 +1027,7 @@ public class EFCEF {
 			        
 			        //Centro Azul Claro
 			        XSSFCellStyle style3 = a.createCellStyle();
-			        style3.setFillForegroundColor(new XSSFColor(new java.awt.Color(0, 251, 254)));
+			        style3.setFillForegroundColor(new XSSFColor(new java.awt.Color(183, 16, 46)));
 			        style3.setAlignment ( XSSFCellStyle.ALIGN_CENTER ) ; 
 			        style3.setFillPattern(CellStyle.SOLID_FOREGROUND);
 			        style3.setBorderBottom(CellStyle.BORDER_THIN);
@@ -1018,9 +1050,11 @@ public class EFCEF {
 //			        my_sheet.getRow(getSetCEF.getPosicaoExiste()-1).getCell(8).setCellStyle(style2);
 //			        my_sheet.getRow(getSetCEF.getPosicaoExiste()-1).getCell(9).setCellStyle(data);			        
 //			        my_sheet.getRow(getSetCEF.getPosicaoExiste()-1).getCell(10).setCellStyle(style1);
-			        my_sheet.getRow(getSetCEF.getPosicaoExiste()-1).getCell(11).setCellValue(getSetCEF.getValorAtualizado());			        
-			        my_sheet.getRow(getSetCEF.getPosicaoExiste()-1).getCell(11).setCellStyle(style1);
-			        my_sheet.getRow(getSetCEF.getPosicaoExiste()-1).getCell(11).setCellType(XSSFCell.CELL_TYPE_STRING);
+			        
+			        //Nao atualziar valor quando for zerado ja existe
+			        //my_sheet.getRow(getSetCEF.getPosicaoExiste()-1).getCell(11).setCellValue(getSetCEF.getValorAtualizado());			        
+			        //my_sheet.getRow(getSetCEF.getPosicaoExiste()-1).getCell(11).setCellStyle(style1);
+			        //my_sheet.getRow(getSetCEF.getPosicaoExiste()-1).getCell(11).setCellType(XSSFCell.CELL_TYPE_STRING);
 			        
 			        my_sheet.getRow(getSetCEF.getPosicaoExiste()-1).getCell(12).setCellStyle(style3);
 			        my_sheet.getRow(getSetCEF.getPosicaoExiste()-1).getCell(12).setCellType(XSSFCell.CELL_TYPE_STRING);
