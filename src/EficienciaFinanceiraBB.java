@@ -23,6 +23,7 @@ public class EficienciaFinanceiraBB extends javax.swing.JFrame {
 	static String path = "";
 	
 	String labels[] = { "01 - JANEIRO", "02 - FEVEREIRO", "03 - MARCO", "04 - ABRIL","05 - MAIO", "06 - JUNHO", "07 - JULHO", "08 - AGOSTO","09 - SETEMBRO", "10 - OUTUBRO","11 - NOVEMBRO", "12 - DEZEMBRO" };
+	String labelsAno[] = { "2015","2016","2017", "2018", "2019", "2020","2021", "2022", "2023", "2024","2025", "2026","2027", "2028", "2029", "2030" };
 	
 	
 	
@@ -41,6 +42,9 @@ public class EficienciaFinanceiraBB extends javax.swing.JFrame {
     	
     		JComboBox comboBox1 = new JComboBox(labels);
         comboBox1.setMaximumRowCount(12);
+        
+		JComboBox comboBox2 = new JComboBox(labelsAno);
+        comboBox1.setMaximumRowCount(20);
        
 
 
@@ -54,6 +58,12 @@ public class EficienciaFinanceiraBB extends javax.swing.JFrame {
         setResizable(false);
 
 
+        comboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	jbtnAnoActionPerformed(evt);
+            }
+        });
+        
         
         comboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -94,6 +104,7 @@ public class EficienciaFinanceiraBB extends javax.swing.JFrame {
                         //.addComponent(jbtnBotao1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(comboBox1)
+                        .addComponent(comboBox2)
                         .addComponent(jbtnBotaoExcel)
                         .addComponent(jbtnBotaoPDF)
                         .addGap(18, 18, 18)))//
@@ -106,6 +117,7 @@ public class EficienciaFinanceiraBB extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 		.addComponent(comboBox1)
+                		.addComponent(comboBox2)
                 		.addComponent(jbtnBotaoPDF)
                     .addComponent(jbtnBotaoExcel))
                 		
@@ -118,6 +130,13 @@ public class EficienciaFinanceiraBB extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>                        
 
+    
+    private void jbtnAnoActionPerformed(java.awt.event.ActionEvent evt) {                                           
+		JComboBox source = (JComboBox) evt.getSource();
+    String item = (String) source.getSelectedItem();
+		Ano(item);
+
+}      
 
     private void jbtnMesActionPerformed(java.awt.event.ActionEvent evt) {                                           
     		JComboBox source = (JComboBox) evt.getSource();
@@ -224,11 +243,24 @@ public class EficienciaFinanceiraBB extends javax.swing.JFrame {
         }
     }
     
+    private void Ano(String Ano) {
+        try {
+        	
+        		System.out.println("ANO BASE COMBO  :>"+ Ano);
+        		
+             
+        		EFBB.ComboAno = Ano.trim();	
+
+        } catch (Exception e) {
+        }
+    }
+    
+    
     
     private void Mes(String Mes) {
         try {
         	
-        		System.out.println("DATA BASE COMBO  :>"+ Mes.substring(0,2));
+        		System.out.println("MES BASE COMBO  :>"+ Mes.substring(0,2));
         		
         		Mes = Mes.substring(0,2);
              

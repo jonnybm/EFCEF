@@ -65,6 +65,7 @@ public class EFCEF {
   	static String caminho = "";
   	static String excelBB = "";
   	static String ComboMes = "";
+  	static String ComboAno = "";
 	
 	
   	static ArrayList<String> arrayPublicoCJExisteUnica = new ArrayList<String> ();
@@ -85,6 +86,7 @@ public class EFCEF {
 
 
 		  	String arquivoPDF = "";	
+		  	String ret = "";
 		  
 		  	File file = new File(caminho);
 			File afile[] = file.listFiles();
@@ -106,20 +108,25 @@ public class EFCEF {
 			        					        			
 					//Trata o PDF lendo linha a linha do array
 					//String textoret = trataPDF(linhas);
-					trataPDF(linhas);
+					 ret = trataPDF(linhas);
+					
+					 System.out.println("PASSo 5 {"+ ret+"}");
 					
 					 //System.out.println("--> "+textoret);
 										 
-					  if(arquivoPDF.indexOf ("DS_Store") <= 0) //Se arquivo for diferente de arquivo de sistema que nao precisa ser analizado
+					  if(arquivoPDF.indexOf ("DS_Store") <= 0 ) //Se arquivo for diferente de arquivo de sistema que nao precisa ser analizado ou se o valor é zero mas nao igual ao mes de consulta
 					  {
-						  lerExcel("a");
+						if(!ret.equals("ValorZeroNaoMesDeReferenciaContulta"))
+						{  lerExcel("a");
+						  
+							getSetCEF.setPorcentagem((i*100)/afile.length);
+							System.out.println(" STATUS: ["+getSetCEF.getPorcentagem()+" %]");
+						}
 					  }
 				}
 			
-				//System.out.println(" LINHA PREENCHIDA ["+i+"]");
 				
-				getSetCEF.setPorcentagem((i*100)/afile.length);
-				System.out.println(" STATUS: ["+getSetCEF.getPorcentagem()+" %]");
+
 			}
 			
 			
@@ -214,9 +221,17 @@ public class EFCEF {
 				        	  			
 					        	  		String[] Valor = null;
 					        	  		Valor =  linhas[i].substring(5, linhas[i].length()-1).split(" ");// Pega a linha e Tira a Data que contem incialmente na linha faz Splito para pegar o segundo valor da Linha
+					        	  		
+					        	  		//DATA ANO CONSULTA
 					        	  		ret = "";
+					        	  		ret = linhas[i].substring(6, 10);
+					        	  		getSetCEF.setDataAnoConsulta(ret.trim());
+					        	  		System.out.println("ANO EXTRATO :>"+ret);
+
+					        	  		
 					        	  		
 					        	  		//DATA MES CONSULTA
+					        	  		ret = "";
 					        	  		ret = linhas[i].substring(3, 5);
 					        	  		getSetCEF.setDataMesConsulta(ret.trim());
 					        	  		
@@ -224,14 +239,12 @@ public class EFCEF {
 				        	  			//VAI RODAR as ultima 4linhas de tras pra frente
 				        	  			for(int i1 = 1; i1 < 6; ++i1){
 				        	  				
-//					        	  			if(linhas[i].toUpperCase().indexOf ("DATA") <= 0 || linhas[i].toUpperCase().indexOf ("PÁGINA") <= 0 || linhas[i].toUpperCase().indexOf ("EXTRATO") <= 0)
-//					        	  			{
-//					        	  				System.out.println("linhas[i]"+ linhas[i]);
-//					        	  				System.out.println("Voltando Linha para achar Valor");
-//					        	  				continue;
-//					        	  			}
 				        	  				
-				        	  				if(getSetCEF.getDataMesConsulta().equals(ComboMes) || getSetCEF.getDataMesConsulta() == ComboMes)  {
+				        	  				//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+				        	  				//>>>>>>>> PERGUNTAR O ANO TAMBEM <<<<<<<<
+				        	  				//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>				        	  				
+				        	  				if( getSetCEF.getDataMesConsulta().equals(ComboMes) && getSetCEF.getDataAnoConsulta().equals(ComboAno))  
+				        	  				{
 				        	  					
 				        	  					//System.out.println("DATA IGUAIS VAI PEGAR VALOR :>"+ComboMes);
 				        	  												        	  		
@@ -253,12 +266,29 @@ public class EFCEF {
 				        	  					{	
 				        	  					
 				        	  						Valor =  linhas[i].substring(5, linhas[i].length()-1).split(" ");// Pega a linha e Tira a Data que contem incialmente na linha faz Splito para pegar o segundo valor da Linha
-								        	  		
+								        	  	
+
 								        	  		//VALOR
 				        	  						ret = "";
 								        	  		ret = Valor[2];
 								        	  		ret =  trataSujeira(ret);
-								        	  		getSetCEF.setValorAtualizado(ret.trim());
+								        	  		ret = ret.trim();
+								        	 
+								        	  		System.out.println("VALOR LINHA : ["+ret.trim()+"]");
+								        	  		
+								        	  		//Se VALOR FOR ZERO E NAO ESTIVER NO MES DE REFERENCIA DE CONSULTA IGNORAR	
+								        	  		if(ret.equals("0,00"))
+								        	  		{	
+								        	  			
+								        	  			ret = "ValorZeroNaoMesDeReferenciaContulta";
+								        	  			
+								        	  			return ret;
+								        	  			
+								        	  		}
+								        	  		else
+								        	  		{
+								        	  			getSetCEF.setValorAtualizado(ret.trim());
+								        	  		}
 				        	  					}
 				        	  					else
 				        	  					{				        	  						
@@ -272,18 +302,7 @@ public class EFCEF {
 								        	  		getSetCEF.setDataMesConsulta(ret.trim());
 				        	  					}	
 				        	  				}
-				        	  					
-				        	  			
 				        	  			}
-					        	  		
-					        	  		
-//					        	  		//VALOR
-//					        	  		ret = Valor[2];
-//					        	  		ret =  trataSujeira(ret);
-//					        	  		getSetCEF.setValorAtualizado(ret.trim());
-					        	  		
-				        	  			//System.out.println("VALOR :>"+ret.trim());
-
 				        	        }
 				        	  		else {
 				        	  			ret =  ret; //se sim para nao dar erro envia apenas o nome

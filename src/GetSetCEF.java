@@ -17,10 +17,16 @@ public class GetSetCEF {
 	public String ContaJuridica = "";
 	public String CNPJ = "";
 	public String DataMesConsulta = "";
-	
+	public String DataAnoConsulta = "";
 	
 	
 
+	public String getDataAnoConsulta() {
+		return DataAnoConsulta;
+	}
+	public void setDataAnoConsulta(String dataAnoConsulta) {
+		DataAnoConsulta = dataAnoConsulta;
+	}
 	public String getDataMesConsulta() {
 		return DataMesConsulta;
 	}
