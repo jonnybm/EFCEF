@@ -87,6 +87,7 @@ public class EFCEF {
 
 		  	String arquivoPDF = "";	
 		  	String ret = "";
+		  	String excluidos  = "";
 		  
 		  	File file = new File(caminho);
 			File afile[] = file.listFiles();
@@ -117,11 +118,22 @@ public class EFCEF {
 					  if(arquivoPDF.indexOf ("DS_Store") <= 0 ) //Se arquivo for diferente de arquivo de sistema que nao precisa ser analizado ou se o valor é zero mas nao igual ao mes de consulta
 					  {
 						if(!ret.equals("ValorZeroNaoMesDeReferenciaContulta"))
-						{  lerExcel("a");
+						{ 
+							lerExcel("a");
 						  
 							getSetCEF.setPorcentagem((i*100)/afile.length);
 							System.out.println(" STATUS: ["+getSetCEF.getPorcentagem()+" %]");
 						}
+						else
+						{
+							excluidos = caminho+"/EXCLUIDOS";
+							diretorio(excluidos);
+							
+							// -------- FAZER AQUI ------- ///
+				
+							// ----2 SE entrou neste if pod jogar o PDF (arquivoPDF) para a pasta EXCLUIDOS
+							// --  3 
+						}	
 					  }
 				}
 			
@@ -521,11 +533,7 @@ public class EFCEF {
 		        return campo.matches("[0-9]+");   
 		}
 				  
-		  
-		 
-		 
-		  
-		  
+		  		  
 		  public static String toTitledCase(String nome){
 			  
 			  //System.out.println("STR ENTRADA= "+ nome);
@@ -557,6 +565,19 @@ public class EFCEF {
 			}  
 		  
 		  
+		  public static String diretorio(String caminho) {
+			
+			  File diretorio = new File(caminho); // ajfilho é uma pasta!
+			  if (!diretorio.exists()) {
+			     diretorio.mkdir(); //mkdir() cria somente um diretório, mkdirs() cria diretórios e subdiretórios.
+			  } else {
+			     System.out.println("Diretório já existente");
+			  }
+
+			  
+			  return caminho;
+			  
+		  }
 		  
 		  public static String lerExcel(String str) throws IOException{
 
@@ -1381,317 +1402,7 @@ public class EFCEF {
 		        		System.out.println(" ERRO: " + e);
 		        }
 			}
-		  
-		  
-//		  public static void EscreverExistiNaoUnica() throws IOException {
-//			  try{
-//				  	String pintaRosa = "";
-//				  
-//				  	fo = new File(excelBB);
-//			        XSSFWorkbook a = new XSSFWorkbook(new FileInputStream(fo));
-//			        XSSFSheet my_sheet = a.getSheetAt(0);
-//			        
-//			        System.out.println("5-  EscreverExistiNaoUnica GRAVAR NA LINHA :  " + getSetCEF.getPosicaoExiste());
-//			        
-//
-//			        //Direita Cor Azul Claro
-//			        XSSFCellStyle style1 = a.createCellStyle();
-//			       // style1.setFillForegroundColor(new XSSFColor(new java.awt.Color(245, 188, 220)));
-//			        style1.setAlignment ( XSSFCellStyle.ALIGN_RIGHT ) ; 
-////			        style1.setFillPattern(CellStyle.SOLID_FOREGROUND);
-////			        style1.setBorderBottom(CellStyle.BORDER_THIN);
-////			        style1.setBottomBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-////			        style1.setBorderLeft(CellStyle.BORDER_THIN);
-////			        style1.setLeftBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-////			        style1.setBorderRight(CellStyle.BORDER_THIN);
-////			        style1.setRightBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-////			        style1.setBorderTop(CellStyle.BORDER_THIN);
-////			        style1.setTopBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-//			        
-//			        //Centro Azul Claro
-//			        XSSFCellStyle style2 = a.createCellStyle();
-//			      //  style2.setFillForegroundColor(new XSSFColor(new java.awt.Color(245, 188, 220)));
-//			        style2.setAlignment ( XSSFCellStyle.ALIGN_CENTER ) ; 
-////			        style2.setFillPattern(CellStyle.SOLID_FOREGROUND);
-////			        style2.setBorderBottom(CellStyle.BORDER_THIN);
-////			        style2.setBottomBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-////			        style2.setBorderLeft(CellStyle.BORDER_THIN);
-////			        style2.setLeftBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-////			        style2.setBorderRight(CellStyle.BORDER_THIN);
-////			        style2.setRightBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-////			        style2.setBorderTop(CellStyle.BORDER_THIN);
-////			        style2.setTopBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-//			        
-//			        
-//			        CreationHelper createHelper = a.getCreationHelper();
-//			        XSSFCellStyle data = a.createCellStyle();
-//			        //data.setFillForegroundColor(new XSSFColor(new java.awt.Color(245, 188, 220)));
-//			        data.setAlignment ( XSSFCellStyle.ALIGN_CENTER ) ; 
-////			        data.setFillPattern(CellStyle.SOLID_FOREGROUND);
-//			        data.setDataFormat(createHelper.createDataFormat().getFormat("dd/mm/yy"));
-////			        data.setBorderLeft(CellStyle.BORDER_THIN);
-////			        data.setLeftBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-////			        data.setBorderRight(CellStyle.BORDER_THIN);
-////			        data.setRightBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-////			        data.setBorderTop(CellStyle.BORDER_THIN);
-////			        data.setTopBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-//			        
-//			        
-//			        //Centro Azul Claro
-//			        XSSFCellStyle style3 = a.createCellStyle();
-//			        style3.setFillForegroundColor(new XSSFColor(new java.awt.Color(245, 103, 232)));
-//			        style3.setAlignment ( XSSFCellStyle.ALIGN_CENTER ) ; 
-//			        style3.setFillPattern(CellStyle.SOLID_FOREGROUND);
-//			        style3.setBorderBottom(CellStyle.BORDER_THIN);
-//			        style3.setBottomBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-//			        style3.setBorderLeft(CellStyle.BORDER_THIN);
-//			        style3.setLeftBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-//			        style3.setBorderRight(CellStyle.BORDER_THIN);
-//			        style3.setRightBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-//			        style3.setBorderTop(CellStyle.BORDER_THIN);
-//			        style3.setTopBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));			        
-//			       
-//
-//			        
-//			        
-//			        for (int i = 0; i < getSetCEF.getArrayCJExisteNaoUnica().size(); i++) {
-//       	         		pintaRosa = getSetCEF.getArrayCJExisteNaoUnica().get(i);
-//       	         		//System.out.println(" PINTANDO DE ROSA" + pintaRosa);	
-//       	        			
-//       	        			Integer.parseInt(pintaRosa);
-//       			        
-//       	        			my_sheet.getRow(Integer.parseInt(pintaRosa)-1).getCell(12).setCellStyle(style3);
-//       			        my_sheet.getRow(Integer.parseInt(pintaRosa)-1).getCell(12).setCellType(XSSFCell.CELL_TYPE_STRING);
-//			        
-//			        }
-//			        
-//			        
-//
-//			       // my_sheet.getRow(getSetCEF.getPosicaoExiste()-1).getCell(12).setCellStyle(style3);
-//			        //my_sheet.getRow(getSetCEF.getPosicaoExiste()-1).getCell(12).setCellType(XSSFCell.CELL_TYPE_STRING);
-//
-//			        
-//			        FileOutputStream outputStream = new FileOutputStream(new File(excelBB));
-//			        a.write(outputStream);
-//			        outputStream.close();//Close in finally if possible
-//			        
-//			        outputStream = null;
-//
-//  
-//			        
-//		        }catch(Exception e){
-//		        		System.out.println("5  ERRO: " + e);
-//		        }
-//			}
-//		  
-//		  
-//		  public static void EscreverExistiNaoUnicaNovo() throws IOException {
-//			  try{
-//				  	fo = new File(excelBB);
-//			        XSSFWorkbook a = new XSSFWorkbook(new FileInputStream(fo));
-//			        
-//			        XSSFSheet my_sheet = a.getSheetAt(0);
-//			        
-//			        
-//			        System.out.println("6-  EscreverExistiNaoUnicaNovo GRAVAR NA LINHA :  " + getSetCEF.getContadorPosicao());
-//			        
-//
-//			        //Direita Cor Azul Claro
-//			        XSSFCellStyle style1 = a.createCellStyle();
-////			        style1.setFillForegroundColor(new XSSFColor(new java.awt.Color(245, 122, 213)));
-//			        style1.setAlignment ( XSSFCellStyle.ALIGN_RIGHT ) ; 
-////			        style1.setFillPattern(CellStyle.SOLID_FOREGROUND);
-////			        style1.setBottomBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-////			        style1.setBorderLeft(CellStyle.BORDER_THIN);
-////			        style1.setLeftBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-////			        style1.setBorderRight(CellStyle.BORDER_THIN);
-////			        style1.setRightBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-////			        style1.setBorderTop(CellStyle.BORDER_THIN);
-////			        style1.setTopBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-//			        
-//			        
-//			        //Centro Azul Claro
-//			        XSSFCellStyle style2 = a.createCellStyle();
-////			        style2.setFillForegroundColor(new XSSFColor(new java.awt.Color(245, 122, 213)));
-//			        style2.setAlignment ( XSSFCellStyle.ALIGN_CENTER ) ; 
-////			        style2.setFillPattern(CellStyle.SOLID_FOREGROUND);
-////			        style2.setBorderBottom(CellStyle.BORDER_THIN);
-////			        style2.setBottomBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-////			        style2.setBorderLeft(CellStyle.BORDER_THIN);
-////			        style2.setLeftBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-////			        style2.setBorderRight(CellStyle.BORDER_THIN);
-////			        style2.setRightBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-////			        style2.setBorderTop(CellStyle.BORDER_THIN);
-////			        style2.setTopBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-//			        
-//			        
-//			        
-//			        //Centro Com data Azul
-//			        CreationHelper createHelper = a.getCreationHelper();
-//			        XSSFCellStyle data = a.createCellStyle();
-//			        //data.setFillForegroundColor(new XSSFColor(new java.awt.Color(245, 122, 213)));
-//			        data.setAlignment ( XSSFCellStyle.ALIGN_CENTER ) ; 
-////			        data.setFillPattern(CellStyle.SOLID_FOREGROUND);
-//			        data.setDataFormat(createHelper.createDataFormat().getFormat("dd/mm/yy"));
-////			        data.setBorderLeft(CellStyle.BORDER_THIN);
-////			        data.setLeftBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-////			        data.setBorderRight(CellStyle.BORDER_THIN);
-////			        data.setRightBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-////			        data.setBorderTop(CellStyle.BORDER_THIN);
-////			        data.setTopBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-//			        
-//			        
-//			        //Centro Azul Claro
-//			        XSSFCellStyle style3 = a.createCellStyle();
-//			        style3.setFillForegroundColor(new XSSFColor(new java.awt.Color(178, 0, 196)));
-//			        style3.setAlignment ( XSSFCellStyle.ALIGN_CENTER ) ; 
-//			        style3.setFillPattern(CellStyle.SOLID_FOREGROUND);
-//			        style3.setBorderBottom(CellStyle.BORDER_THIN);
-//			        style3.setBottomBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-//			        style3.setBorderLeft(CellStyle.BORDER_THIN);
-//			        style3.setLeftBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-//			        style3.setBorderRight(CellStyle.BORDER_THIN);
-//			        style3.setRightBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-//			        style3.setBorderTop(CellStyle.BORDER_THIN);
-//			        style3.setTopBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));		 
-//			        
-//			        
-//
-//
-//			        my_sheet.createRow(getSetCEF.getContadorPosicao()-1);
-//
-//			        
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).createCell(1);
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(1).setCellValue(getSetCEF.getAutor());
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(1).setCellStyle(style2);
-//			        
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).createCell(2);
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(2).setCellValue(getSetCEF.getReu());
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(2).setCellStyle(style2);
-//		        
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).createCell(3);
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(3).setCellValue("");
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(3).setCellStyle(style2);
-//			        
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).createCell(4);
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(4).setCellValue(getSetCEF.getProcesso());
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(4).setCellStyle(style2);
-//			        
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).createCell(5);
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(5).setCellValue(getSetCEF.getVara());
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(5).setCellStyle(style2);
-//			        
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).createCell(6);
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(6).setCellValue(getSetCEF.getComarca());
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(6).setCellStyle(style2);
-//			        
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).createCell(7);
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(7).setCellValue("");
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(7).setCellStyle(style2);
-//
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).createCell(8);
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(8).setCellValue("Trabalhista");
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(8).setCellStyle(style2);
-//			        
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).createCell(9);
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(9).setCellValue("");
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(9).setCellStyle(data);
-//
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).createCell(10);
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(10).setCellValue(getSetCEF.getValorOriginal());
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(10).setCellStyle(style1);
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(10).setCellType(XSSFCell.CELL_TYPE_STRING);
-//			        
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).createCell(11);
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(11).setCellValue(getSetCEF.getValorAtualizado());			        
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(11).setCellStyle(style1);
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(11).setCellType(XSSFCell.CELL_TYPE_STRING);
-//			        
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).createCell(12);
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(12).setCellValue(getSetCEF.getContaJuridica());
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(12).setCellStyle(style3);
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(12).setCellType(XSSFCell.CELL_TYPE_STRING);
-//			        
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).createCell(13);
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(13).setCellValue(getSetCEF.getParcela());			        
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(13).setCellStyle(style2);
-//			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(13).setCellType(XSSFCell.CELL_TYPE_STRING);
-//
-//			        
-//			        FileOutputStream outputStream = new FileOutputStream(new File(excelBB));
-//			        a.write(outputStream);
-//			        outputStream.close();//Close in finally if possible
-//			        
-//			        outputStream = null;
-//  
-//			        
-//		        }catch(Exception e){
-//		        		System.out.println("1-  EscreverContaNovaComValor GRAVAR NA LINHA EROOO");
-//		        		System.out.println(" ERRO: " + e);
-//		        }
-//			}	
-//		  
-//		  
-//		  public static void EscreverExistiNaoUnicaComValor() throws IOException {
-//			  try{
-//				    fo = new File(excelBB);
-//			        XSSFWorkbook a = new XSSFWorkbook(new FileInputStream(fo));
-//			        XSSFSheet my_sheet = a.getSheetAt(0);
-//			        
-//			        System.out.println("1-  EscreverExistiNaoUnicaComValor GRAVAR NA LINHA :  " + getSetCEF.getPosicaoExiste());
-//			        
-//
-//			        //Direita Cor Azul Claro
-//			        XSSFCellStyle style1 = a.createCellStyle();
-//			        style1.setAlignment ( XSSFCellStyle.ALIGN_RIGHT ) ; 
-//
-//			        
-//			        //Centro Azul Claro
-//			        XSSFCellStyle style2 = a.createCellStyle();
-//			        style2.setAlignment ( XSSFCellStyle.ALIGN_CENTER ) ; 
-//			        
-//			        
-//			        CreationHelper createHelper = a.getCreationHelper();
-//			        XSSFCellStyle data = a.createCellStyle();
-//			        data.setAlignment ( XSSFCellStyle.ALIGN_CENTER ) ; 
-//			        data.setDataFormat(createHelper.createDataFormat().getFormat("dd/mm/yy"));
-//			        
-//			        
-//			        //Centro Azul Claro
-//			        XSSFCellStyle style3 = a.createCellStyle();
-//			        style3.setFillForegroundColor(new XSSFColor(new java.awt.Color(245, 188, 220)));
-//			        style3.setAlignment ( XSSFCellStyle.ALIGN_CENTER ) ; 
-//			        style3.setFillPattern(CellStyle.SOLID_FOREGROUND);
-//			        style3.setBorderBottom(CellStyle.BORDER_THIN);
-//			        style3.setBottomBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-//			        style3.setBorderLeft(CellStyle.BORDER_THIN);
-//			        style3.setLeftBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-//			        style3.setBorderRight(CellStyle.BORDER_THIN);
-//			        style3.setRightBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-//			        style3.setBorderTop(CellStyle.BORDER_THIN);
-//			        style3.setTopBorderColor(new XSSFColor(new java.awt.Color(0, 0, 0)));
-//			       
-//
-//			        my_sheet.getRow(getSetCEF.getPosicaoExiste()-1).getCell(11).setCellValue(getSetCEF.getValorAtualizado());			        
-//			        my_sheet.getRow(getSetCEF.getPosicaoExiste()-1).getCell(11).setCellStyle(style1);
-//			        my_sheet.getRow(getSetCEF.getPosicaoExiste()-1).getCell(11).setCellType(XSSFCell.CELL_TYPE_STRING);
-//			        
-//			        my_sheet.getRow(getSetCEF.getPosicaoExiste()-1).getCell(12).setCellStyle(style3);
-//			        my_sheet.getRow(getSetCEF.getPosicaoExiste()-1).getCell(12).setCellType(XSSFCell.CELL_TYPE_STRING);
-//
-//			        
-//			        FileOutputStream outputStream = new FileOutputStream(new File(excelBB));
-//			        a.write(outputStream);
-//			        outputStream.close();//Close in finally if possible
-//			        outputStream = null;
-//
-//
-//  
-//			        
-//		        }catch(Exception e){
-//		        	System.out.println("6 ERRO: " + e);
-//		        }
-//			}
+
 	  
 		  
 }
