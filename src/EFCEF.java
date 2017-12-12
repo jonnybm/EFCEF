@@ -74,14 +74,14 @@ public class EFCEF {
   	static File fo = new File(excelBB);
 
 	//public static void main(String[] args) throws IOException {	
-	public static void init() throws IOException {
+	public static void init() throws IOException, InterruptedException {
 		fo = new File(excelBB);
 		visualizarArquivos();
 		
 	}
 
 	
-	  public static void visualizarArquivos() throws IOException {
+	  public static void visualizarArquivos() throws IOException, InterruptedException {
 		  
 
 
@@ -111,7 +111,7 @@ public class EFCEF {
 					//String textoret = trataPDF(linhas);
 					 ret = trataPDF(linhas);
 					
-					 System.out.println("PASSo 5 {"+ ret+"}");
+					 //System.out.println("PASSo 5 {"+ ret+"}");
 					
 					 //System.out.println("--> "+textoret);
 										 
@@ -126,8 +126,20 @@ public class EFCEF {
 						}
 						else
 						{
-							excluidos = caminho+"/EXCLUIDOS";
+							excluidos = caminho+"EXCLUIDOS";
+							
+							//VENDO SE O DIRETORIO EXISTE CASO NAO EXISTA CRIAR
 							diretorio(excluidos);
+							
+							Thread.sleep( 500 ); 
+							
+							excluidos = excluidos+"/"+arquivos.getName();
+							
+							System.out.println(" PDF ORIGINAL: ["+arquivoPDF+"]");
+							System.out.println(" PDF JOGAR: ["+excluidos+"]");
+							
+							arquivos.renameTo(new File(excluidos));
+							
 							
 							// -------- FAZER AQUI ------- ///
 				
@@ -238,7 +250,7 @@ public class EFCEF {
 					        	  		ret = "";
 					        	  		ret = linhas[i].substring(6, 10);
 					        	  		getSetCEF.setDataAnoConsulta(ret.trim());
-					        	  		System.out.println("ANO EXTRATO :>"+ret);
+					        	  		//System.out.println("ANO EXTRATO :>"+ret);
 
 					        	  		
 					        	  		
@@ -286,7 +298,7 @@ public class EFCEF {
 								        	  		ret =  trataSujeira(ret);
 								        	  		ret = ret.trim();
 								        	 
-								        	  		System.out.println("VALOR LINHA : ["+ret.trim()+"]");
+								        	  		//System.out.println("VALOR LINHA : ["+ret.trim()+"]");
 								        	  		
 								        	  		//Se VALOR FOR ZERO E NAO ESTIVER NO MES DE REFERENCIA DE CONSULTA IGNORAR	
 								        	  		if(ret.equals("0,00"))
@@ -332,7 +344,7 @@ public class EFCEF {
 				            		//SETANDO O PROCESSO
 				            		getSetCEF.setProcesso(ret);
 				            		
-				            		System.out.println("PROCESSO :>"+ret.trim());
+				            		//System.out.println("PROCESSO :>"+ret.trim());
 				          }
 						  						  
 						  if(i == 16) //LINHA 5 PEGA VARA , COMARCA e ESTADO
@@ -362,7 +374,7 @@ public class EFCEF {
 				            	 	//COMARCA
 				            		ret = parts[1];
 				            		
-				            		System.out.println("COMARCA E ESTADO :>"+ret.trim());
+				            		//System.out.println("COMARCA E ESTADO :>"+ret.trim());
 				            		
 				            	 	parts = ret.split("/");
 				            	 	
