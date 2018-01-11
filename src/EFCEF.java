@@ -66,6 +66,7 @@ public class EFCEF {
   	static String excelBB = "";
   	static String ComboMes = "";
   	static String ComboAno = "";
+  	static String ComboAdd = "";
 	
 	
   	static ArrayList<String> arrayPublicoCJExisteUnica = new ArrayList<String> ();
@@ -189,6 +190,7 @@ public class EFCEF {
 		  public static String trataPDF(String[] linhas) 
 		  {			  
 			  String ret = "";
+			  boolean EXTRATOFALTACAMPOS = false;
 			  
 			  //System.out.println("PASSO 1");
 
@@ -200,10 +202,37 @@ public class EFCEF {
 						  ret = linhas[i];
 						 // System.out.println("CONTEUDO :>"+ret + " ["+i+"]");
 						  
+						  
+							 //CASE SEJA UM EXTRA COM POSICAO ERRADA DE CONTA JUDICAL 
+							if(i == 18)							
+			        	        {
+								if( linhas[18].length()  == 20 || linhas[18].length()  == 21)  // No Mac 20 e no Windows 21 
+								{
+									EXTRATOFALTACAMPOS = false;
+									//System.out.println("EXTRATOFALTACAMPOS = false <-------"+ linhas[18].length());
+								}
+								else
+								{
+									//System.out.println("EXTRATOFALTACAMPOS = TRUE <-------"+ linhas[18].length());
+									EXTRATOFALTACAMPOS = true;
+			        	        
+								}
+			        	        }
+						  
+							
+							
 						  //PEGANDO A CONTA JUDICIAL
 						  if(i == 20 ) //PEGANDO CONTA JUDICIAL
 				          {
 				           		ret = linhas[i];
+				           		
+						        if(EXTRATOFALTACAMPOS)//Quantidade é igual a quantidade de uma CJ tamanho 20? && a Conta Judicial da linha 19 tem mais que 8 digitos caracterizando assim uma conta juridica
+				        	        {
+					           		ret = linhas[19];
+				        	        }
+				           		
+				           		
+				           		
 				           		//ret =  trataSujeira(ret.trim());
 				            		
 				            		//SETANDO A CONTA JUDICIAL
@@ -216,6 +245,11 @@ public class EFCEF {
 				          {
 							  	ret = "";
 			        	  			ret = linhas[i];	
+			        	  			
+							    if(EXTRATOFALTACAMPOS)//Quantidade é igual a quantidade de uma CJ tamanho 20? && a Conta Judicial da linha 19 tem mais que 8 digitos caracterizando assim uma conta juridica
+				        	        {
+					           		ret = linhas[24];
+				        	        }
 			        	  			
 				        	  		ret = ret.replace("1", "");
 				        	  		ret = ret.replace("2", "");
@@ -266,8 +300,21 @@ public class EFCEF {
 				        	  				
 				        	  				//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 				        	  				//>>>>>>>> PERGUNTAR O ANO TAMBEM <<<<<<<<
-				        	  				//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>				        	  				
-				        	  				if( getSetCEF.getDataMesConsulta().equals(ComboMes) && getSetCEF.getDataAnoConsulta().equals(ComboAno))  
+				        	  				//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	
+				        	  				if(ComboAdd.equals("SIM") || ComboAno == "SIM")
+				        	  				{
+				        	  					
+				        	  					//System.out.println("DATA IGUAIS VAI PEGAR VALOR :>"+ComboMes);
+				        	  												        	  		
+							        	  		//VALOR
+				        	  					ret = "";
+							        	  		ret = Valor[2];
+							        	  		ret =  trataSujeira(ret);
+							        	  		getSetCEF.setValorAtualizado(ret.trim());
+				        	  					
+				        	  					break;
+				        	  				}	
+				        	  				else if( getSetCEF.getDataMesConsulta().equals(ComboMes) && getSetCEF.getDataAnoConsulta().equals(ComboAno))  
 				        	  				{
 				        	  					
 				        	  					//System.out.println("DATA IGUAIS VAI PEGAR VALOR :>"+ComboMes);
@@ -311,6 +358,7 @@ public class EFCEF {
 								        	  		}
 								        	  		else
 								        	  		{
+								        	  			ret =  trataSujeira(ret);
 								        	  			getSetCEF.setValorAtualizado(ret.trim());
 								        	  		}
 				        	  					}
@@ -406,7 +454,23 @@ public class EFCEF {
 							  	//CNPJ
 				            		ret = linhas[i];
 				            		
-				            		ret = ret.substring(0,18);
+							    if(EXTRATOFALTACAMPOS)//Quantidade é igual a quantidade de uma CJ tamanho 20? && a Conta Judicial da linha 19 tem mais que 8 digitos caracterizando assim uma conta juridica
+				        	        {
+					           		ret = linhas[23];
+				        	        }
+				            		
+							    
+							    //Bloco try-catch Caso nao tenha o campo de CNPJ colocar "---------------"
+						        try
+						        { 
+						        		ret = ret.substring(0,18);
+						        	}
+						        catch(IndexOutOfBoundsException indexOutOfBoundsException){
+				            			ret = "-------------------";
+						        }
+							    
+							    
+				            		//ret = ret.substring(0,18);
 				            		getSetCEF.setCNPJ(ret);
 				            		//System.out.println("CNPJ :>"+ret);
 				            		
@@ -438,6 +502,14 @@ public class EFCEF {
 				          {
 				            	ret = linhas[i];
 				            	
+				           // 	System.out.println("VALOR DO DEPOSITO INICIAL Linha 27 :>"+linhas[28]);
+				            	
+						    if(EXTRATOFALTACAMPOS)//Quantidade é igual a quantidade de uma CJ tamanho 20? && a Conta Judicial da linha 19 tem mais que 8 digitos caracterizando assim uma conta juridica
+			        	        {
+				           		ret = linhas[27];
+				           	//	System.out.println("VALOR DO DEPOSITO INICIAL Linha 27 :>"+linhas[27]);
+			        	        }
+				            	
 				            	
 				            	
 				            	String[] partsVara = null;
@@ -450,9 +522,18 @@ public class EFCEF {
 			            	 	
 				            	
 				            	
-			            	 	//VARA DO TRABALHO
-			            	 	ret = partsVara[1];
+			            	 	//VALOR DO DEPOSITO
+			            	 	ret = partsVara[2];
 			            	 	ret =  trataSujeira(ret.trim());	
+			            	 	
+			            	 	ret = ret.replace("CR", "");
+			            	 	ret = ret.replace("TR", "");
+			            	 	ret = ret.replace("DOC", "");
+			            	 	ret = ret.replace("DEP", "");
+			            	 	ret = ret.replace("CRED", "");
+			            	 	ret = ret.replace("TED", "");
+			            	 	ret = ret.replace("DP", "");
+			            	 	
 				            	//SETANDO VALOR DEPOSITO INICIAL
 				            	getSetCEF.setValorOriginal(ret);
 				            	
@@ -536,7 +617,10 @@ public class EFCEF {
 	     		ret = ret.replaceAll("Saldo do período", "");
 	     		ret = ret.replaceAll("Saldo do perodo", "");
 	     		ret = ret.replaceAll("      ", "");
-		     		ret = ret.replace("CONTA JUDICIAL", "");
+		     	ret = ret.replace("CONTA JUDICIAL", "");
+		     	ret = ret.replace("DEB", "");
+		     	ret = ret.replace("LEV", "");
+
 	       		return ret;
 		    }
 		  
@@ -925,9 +1009,13 @@ public class EFCEF {
 		  
 		  public static void EscreverExistiUnicaComValor() throws IOException {
 			  try{
-				  	fo = new File(excelBB);
-			        XSSFWorkbook a = new XSSFWorkbook(new FileInputStream(fo));
-			        XSSFSheet my_sheet = a.getSheetAt(0);
+				  	XSSFWorkbook a = null; 
+				  	
+			         a = new XSSFWorkbook(new FileInputStream(fo));
+			        
+			         XSSFSheet my_sheet = null;
+			         
+			         my_sheet = a.getSheetAt(0);
 			        
 			        System.out.println("1-  EscreverExistiUnicaComValor GRAVAR NA LINHA :  " + getSetCEF.getPosicaoExiste());
 			        
@@ -1009,7 +1097,9 @@ public class EFCEF {
 			        my_sheet.getRow(getSetCEF.getPosicaoExiste()-1).getCell(12).setCellType(XSSFCell.CELL_TYPE_STRING);
 //			        my_sheet.getRow(getSetCEF.getPosicaoExiste()-1).getCell(13).setCellStyle(style2);
 			        
-			        FileOutputStream outputStream = new FileOutputStream(new File(excelBB));
+			        FileOutputStream outputStream  = null;
+			        outputStream = new FileOutputStream(new File(excelBB));
+			        
 			        a.write(outputStream);
 			        outputStream.close();//Close in finally if possible
 			        outputStream = null;
@@ -1024,9 +1114,13 @@ public class EFCEF {
 		  
 		  public static void EscreverExistiUnicaValorZero() throws IOException {
 			  try{
-				  	fo = new File(excelBB);
-			        XSSFWorkbook a = new XSSFWorkbook(new FileInputStream(fo));
-			        XSSFSheet my_sheet = a.getSheetAt(0);
+				  	XSSFWorkbook a = null; 
+				  	
+			         a = new XSSFWorkbook(new FileInputStream(fo));
+			        
+			         XSSFSheet my_sheet = null;
+			         
+			         my_sheet = a.getSheetAt(0);
 			        
 			        System.out.println("2 -  EscreverExistiUnicaValorZero GRAVAR NA LINHA :  " + getSetCEF.getPosicaoExiste());
 			        
@@ -1113,7 +1207,9 @@ public class EFCEF {
 //			        my_sheet.getRow(getSetCEF.getPosicaoExiste()-1).getCell(13).setCellStyle(style2);
 			        
      
-			        FileOutputStream outputStream = new FileOutputStream(new File(excelBB));
+			        FileOutputStream outputStream  = null;
+			        outputStream = new FileOutputStream(new File(excelBB));
+			        
 			        a.write(outputStream);
 			        outputStream.close();//Close in finally if possible
 			        
@@ -1128,11 +1224,13 @@ public class EFCEF {
 		  public static void EscreverContaNovaComValor() throws IOException {
 			  try{
 				  
-				  
+				  	XSSFWorkbook a = null; 
 				  	
-			        XSSFWorkbook a = new XSSFWorkbook(new FileInputStream(fo));
+			         a = new XSSFWorkbook(new FileInputStream(fo));
 			        
-			        XSSFSheet my_sheet = a.getSheetAt(0);
+			         XSSFSheet my_sheet = null;
+			         
+			         my_sheet = a.getSheetAt(0);
 			        
 			        
 			        System.out.println("3 -  EscreverContaNovaComValor GRAVAR NA LINHA :  " + getSetCEF.getContadorPosicao());
@@ -1259,7 +1357,9 @@ public class EFCEF {
 //			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(13).setCellStyle(style2);
 //			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(13).setCellType(XSSFCell.CELL_TYPE_STRING);
 
-			        FileOutputStream outputStream = new FileOutputStream(new File(excelBB));
+			        FileOutputStream outputStream  = null;
+			        outputStream = new FileOutputStream(new File(excelBB));
+			        
 			        a.write(outputStream);
 			        outputStream.close();//Close in finally if possible
 			        outputStream = null;
@@ -1273,11 +1373,18 @@ public class EFCEF {
 		  
 		  public static void EscreverContaNovaValorZero() throws IOException {
 			  try{
-				  	fo = new File(excelBB);
-			        XSSFWorkbook a = new XSSFWorkbook(new FileInputStream(fo));
+//				  	fo = new File(excelBB);
+//			        XSSFWorkbook a = new XSSFWorkbook(new FileInputStream(fo));
+//			        
+//			        XSSFSheet my_sheet = a.getSheetAt(0);
+
+				  	XSSFWorkbook a = null; 
+				  	
+			         a = new XSSFWorkbook(new FileInputStream(fo));
 			        
-			        XSSFSheet my_sheet = a.getSheetAt(0);
-			        
+			         XSSFSheet my_sheet = null;
+			         
+			         my_sheet = a.getSheetAt(0);
 			        
 			        System.out.println("4 -  EscreverContaNovaValorZero GRAVAR NA LINHA :  " + getSetCEF.getContadorPosicao());
 			        
@@ -1402,7 +1509,9 @@ public class EFCEF {
 //			        my_sheet.getRow(getSetCEF.getContadorPosicao()-1).getCell(13).setCellType(XSSFCell.CELL_TYPE_STRING);
 
 			        
-			        FileOutputStream outputStream = new FileOutputStream(new File(excelBB));
+			        FileOutputStream outputStream  = null;
+			        outputStream = new FileOutputStream(new File(excelBB));
+			        
 			        a.write(outputStream);
 			        outputStream.close();//Close in finally if possible
 			        
