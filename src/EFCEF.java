@@ -430,21 +430,22 @@ public class EFCEF {
 				            	 	ret = parts[0];
 				            	 	ret =  toTitledCase(ret);
 				            	 	getSetCEF.setComarca(ret);
-				            		//System.out.println("COMARCA :>"+ret.trim());
 				            	 	
+				            		//System.out.println("ESTADO :>"+parts[0]);
+				            		//System.out.println("ESTADO :>"+parts[1]);
 				            	 	
+
 				            		
-				            	 	//ESTADO - Seta Estado
-				            		
-				            		if(parts.length == 1)
+				            		if(parts.length == 1)// Se nao conseguiu pegar Ceta Estado do RJ
 				            		{
-				            			ret = " ";	
+				            			ret = "RJ";	
 				            		}
 				            		else
 				            		{	
-					            		ret = parts[1];
-					            	 	getSetCEF.setEstado(ret);
+				            			ret = parts[1];
 				            		}
+				            		
+				            		getSetCEF.setEstado(ret);
 
 				          }
 
