@@ -620,6 +620,7 @@ public class EFCEF {
 		     	ret = ret.replace("CONTA JUDICIAL", "");
 		     	ret = ret.replace("DEB", "");
 		     	ret = ret.replace("LEV", "");
+		     	ret = ret.replace("DB", "");
 
 	       		return ret;
 		    }
