@@ -278,7 +278,15 @@ public class EFCEF {
 				        	        {
 				        	  			
 					        	  		String[] Valor = null;
-					        	  		Valor =  linhas[i].substring(5, linhas[i].length()-1).split(" ");// Pega a linha e Tira a Data que contem incialmente na linha faz Splito para pegar o segundo valor da Linha
+					        	  		
+					        	  		
+					        	  		//SE a penultima linha nao for o saldo mas sim a Data voltar mais 2 linhas para alinhar o cabelho para pegar o ultimo Valor
+					        	  		if(linhas[i].substring(0,4).equals("Data"))
+					        	  			linhas[i] =  linhas[i-3];					        	  			
+					        	  		
+					        	  		
+					        	  		Valor =  linhas[i].substring(5, linhas[i].length()-1).split(" ");// Pega a linha e Tira a Data que contem incialmente na linha faz Splito para pegar o segundo valor da Linha					        	  		
+					        	  		
 					        	  		
 					        	  		//DATA ANO CONSULTA
 					        	  		ret = "";
@@ -806,9 +814,9 @@ public class EFCEF {
 				            	      if(contaJudicial == Long.parseLong(CJPDF)) 
 			                        	{
 				            	    	  
-				            	    	     System.out.println("contaJudicial EXEL :>"+contaJudicial);
-				            	    	     System.out.println("contaJudicial PDF :>"+CJPDF);
-				            	    	     System.out.println("POSICAO :>"+i);
+//				            	    	     System.out.println("contaJudicial EXEL :>"+contaJudicial);
+//				            	    	     System.out.println("contaJudicial PDF :>"+CJPDF);
+//				            	    	     System.out.println("POSICAO :>"+i);
 				            	    	     
 				            	    	     
 				            	    	  		getSetCEF.setPosicaoExiste(i);	
