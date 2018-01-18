@@ -14,7 +14,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class EficienciaFinanceiraBB extends javax.swing.JFrame {
+public class EficienciaFinanceiraCEF extends javax.swing.JFrame {
 	
 	static EFCEF EFBB = new EFCEF();
 	private static GetSetCEF getSetBB = new GetSetCEF();
@@ -28,7 +28,7 @@ public class EficienciaFinanceiraBB extends javax.swing.JFrame {
 	
 	
 
-    public EficienciaFinanceiraBB() {
+    public EficienciaFinanceiraCEF() {
         initComponents();
         setTitle("EFICIENCIA FINANCEIRA CAIXA ECONOMICA FEDERAL");
         
@@ -178,7 +178,7 @@ public class EficienciaFinanceiraBB extends javax.swing.JFrame {
                                               
 
     public static void main(String args[]) {
-        (new EficienciaFinanceiraBB()).show();
+        (new EficienciaFinanceiraCEF()).show();
 	      jtaArea.setText(""
 	    		  +"\n   SIGA O PROCEDIMENTO ABAIXO: \n\n"
 	    		  +"   1 - SELECIONE O MES DE REFERENCIA \n"

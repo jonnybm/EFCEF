@@ -56,7 +56,7 @@ import com.sun.xml.internal.ws.util.StringUtils;
 public class EFCEF {
 	
 	private static GetSetCEF getSetCEF = new GetSetCEF();
-	private static EficienciaFinanceiraBB EficienciaFinanceiraBB = new EficienciaFinanceiraBB();
+	private static EficienciaFinanceiraCEF EficienciaFinanceiraBB = new EficienciaFinanceiraCEF();
 	private static String banco = "CEF";  // BB ou CEF
 	
 //  	static String caminho = "/Volumes/HD/BackupJonny/Projetos/EficienciaFinanceira/PDFBB/";
